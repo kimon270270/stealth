@@ -19,9 +19,13 @@ Upon execution, the script performs the following:
 🔁 Workflow Summary:
 
 ⬇️ Download script + image from GitHub
+
 🛠️ Silent dependency install
+
 🔁 .py → .exe conversion
+
 🪪 Startup persistence via Windows startup folder
+
 🖼️ Executable triggers image on each boot
 
 
